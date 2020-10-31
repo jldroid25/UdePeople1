@@ -186,7 +186,7 @@ jobs:
           command: |
             ansible-playbook -i inventory.txt playbook.yml
             
-      # Here's where you will add some code to rollback on failure 
+        # Here's where you will add some code to rollback on failure 
       - destroy-environment:
         workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
         when: on_fail           
@@ -204,11 +204,11 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
-            curl -H "Content-Type: text/plain" \
-            -H "token: 6db56583-4d0a-4d42-92a0-cfcb2c8120cd" \
-            --request PUT --data "migration-result" \
-            https://api.memstash.io/values
-            
+              curl -H "Content-Type: text/plain" \
+              -H "token: 6db56583-4d0a-4d42-92a0-cfcb2c8120cd" \
+              --request PUT --data "migration-result" \
+              https://api.memstash.io/values
+              
      - destroy-environment:
        workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
        when: on_fail      
