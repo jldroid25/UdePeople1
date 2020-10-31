@@ -126,10 +126,6 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: amazon/aws-CLI
-    branches:
-      only:
-        - master
-        - /rc-.*/
     steps:
       - checkout
       - run: yum -y install tar gzip
