@@ -138,19 +138,19 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              #--tags project=your-tag \
-              # --stack-name "your back-end stack name with workflow id" \
+              --tags project=jlbackend1-udepeople1-tag \
+              # --stack-name  udepleople1-backend ${CIRCLE_WORKFLOW_ID}\
               # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-              tags project=YOUR-PROJECT-NAME-HERE
+              tags project=jlbackend1-udepeople1-tag
       - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              #--tags project=your-tag \
-              # --stack-name "your front-end stack name with workflow id" \
+              #--tags project=jlfrontend-udepeople1-tag \
+              # --stack-name udepleople1-frontkend ${CIRCLE_WORKFLOW_ID} \
               # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-              tags project=YOUR-PROJECT-NAME-HERE
+              tags project=jlfrontend-udepeople1-tag
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -173,7 +173,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints:["----->  Found-Circleci-SSH-Section <-------"]
+          fingerprints:["aa:42:af:af:b5:32:3a:bb:66:d7:8f:b4:83:87:75:09"]
       - attach_workspace:
           at: ~/
       - run:
@@ -199,90 +199,132 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            # Your code here
+            # Your code here ?
             exit 1
       - run:
           name: Send migration results to memstash
           command: |
-            # Your code here
+          curl -H "Content-Type: text/plain" \
+          -H "token: 6db56583-4d0a-4d42-92a0-cfcb2c8120cd" \
+          --request PUT --data "migration-result" \
+          https://api.memstash.io/values
             exit 1
-     # Here's where you will add some code to rollback on failure      
+     # Here's where you will add some code to rollback on failure 
+     - destroy-environment:
+      workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      when: on_fail      
 
   deploy-frontend:
     docker:
-      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
-      # Checkout code from git
+      - checkout 
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apk update --ansible
       - run:
           name: Get backend url
           command: |
-            # your code here
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
           command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure      
+            AWS cloudformation deploy\
+            --template-file create frontend.yml \
+            -- stack-name -udapeople1-frontend-${CIRCLE_WORKFLOW_ID}
+
+      # Here's where you will add some code to rollback on failure 
+      - destroy-environment:
+        workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+        when: on_fail      
                     
   deploy-backend:
     docker:
-      # Docker image here that supports Ansible
+      - image: python:3.7-alpine3.11
     steps:
-      # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
+      - checkout
+      - add_ssh_keys:
+          fingerprints:["aa:42:af:af:b5:32:3a:bb:66:d7:8f:b4:83:87:75:09"]
+      - attach_workspace:
+          at: ~/
+
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apk add --update ansible
       - run:
           name: Deploy backend
           command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+            AWS cloudformation deploy\
+            --template-file create backend.yml \
+            -- stack-name back-end-${CIRCLE_WORKFLOW_ID}
+
+      # Here's where you will add some code to rollback on failure 
+      - destroy-environment:
+        workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+        when: on_fail  
 
   smoke-test:
     docker:
-      # Lightweight Docker image 
+      - image: alpine:latest 
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apk add --update curl
       - run:
           name: Get backend url
           command: |
-            # your code here
+            curl -H "token: 6db56583-4d0a-4d42-92a0-cfcb2c8120cd" 
+            --request GET https://api.memstash.io/values/backend-url
       - run:
           name: Backend smoke test.
           command: |
-            # your code here
+            URL="https://backend.udepeople1.com/"
+            if curl -s --head ${URL} 
+            then
+             return 0
+            else
+             return 1
+            fi
       - run:
           name: Frontend smoke test.
           command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+            URL="https://frontend.udepeople1.com/"
+            if curl -s --head ${URL} 
+            then
+             return 0
+            else
+             return 1
+            fi
+      # Here's where you will add some code to rollback on failure 
+      - destroy-environment:
+        workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+        when: on_fail  
 
   cloudfront-update:
     docker:
-      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
     steps:
-      # Checkout code from git
+      checkout 
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apk add --update ansible
       - run:
           name: Update cloudfront distribution
           command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+            aws cloudformation deploy \
+            --template-file template.yml \
+            --stack-name udepeople1-cloudfront \
+            --region us-west-2 
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment:
+        workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+        when: on_fail   
 
 cleanup:
     docker:
