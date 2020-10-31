@@ -139,24 +139,24 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=jlbackend1-udepeople1-tag \
-              # --stack-name  udepleople1-backend ${CIRCLE_WORKFLOW_ID}\
-              # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"  
+               --stack-name  udepleople1-backend ${CIRCLE_WORKFLOW_ID}\
+               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}" \ 
               tags project=jlbackend1-udepeople1-tag
       - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              #--tags project=jlfrontend-udepeople1-tag \
-              # --stack-name udepleople1-frontkend ${CIRCLE_WORKFLOW_ID} \
-              # --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"  
+              --tags project=jlfrontend-udepeople1-tag \
+               --stack-name udepleople1-frontkend ${CIRCLE_WORKFLOW_ID} \
+               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}" \ 
               tags project=jlfrontend-udepeople1-tag
       - run:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances
-            --filters "Name=tag:Name.Values=backend-${CIRCLE_WORKFLOW_ID}"
-            --query 'Reservations[*].instances[*].PublicIpAddress'
+            --filters "Name=tag:Name.Values=backend-${CIRCLE_WORKFLOW_ID}"\
+            --query 'Reservations[*].instances[*].PublicIpAddress'\
             --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
