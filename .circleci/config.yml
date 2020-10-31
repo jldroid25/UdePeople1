@@ -276,8 +276,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            curl -H "token: 6db56583-4d0a-4d42-92a0-cfcb2c8120cd" 
-            --request GET https://api.memstash.io/values/backend-url
+            
       - run:
           name: Backend smoke test.
           command: |
