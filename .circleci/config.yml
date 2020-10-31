@@ -209,9 +209,9 @@ jobs:
               --request PUT --data "migration-result" \
               https://api.memstash.io/values
               
-     - destroy-environment:
-       workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
-       when: on_fail      
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+          when: on_fail      
 
   deploy-frontend:
     docker:
