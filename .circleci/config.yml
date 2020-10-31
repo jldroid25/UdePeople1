@@ -323,8 +323,6 @@ jobs:
         # Here's where you will add some code to rollback on failure
       - destroy-environment:
        
-        when: on_fail   
-
 cleanup:
     docker:
       # Docker image here
