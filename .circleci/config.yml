@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.0
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -258,7 +258,23 @@ jobs:
              return 1
             fi
       - destroy-environment: null
-  
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+            --template-file template.yml \
+            --stack-name udepeople1-cloudfront \
+            --region us-west-2 
+      - destroy-environment: null
 cleanup:
   docker:
     - image: amazon/aws-cli
