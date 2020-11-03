@@ -102,7 +102,7 @@ jobs:
       - restore_cache:
           keys:
             - frontend-build
-      - run: null
+      - run: 
         name: Scan frontend dependencies
         command: cd frontend npm install\
           npm audit  --audit-level=critical
@@ -114,7 +114,7 @@ jobs:
       - restore_cache:
           keys:
             - backtend-build
-      - run: null
+      - run: 
         command: cd backend npm install 
           npm audit --audit-level=critical || true
   deploy-infrastructure:
@@ -152,7 +152,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment: null
+      - destroy-environment: 
   configure-infrastructure:
     docker:
       - image: 'python:3.7-alpine3.11'
@@ -169,7 +169,7 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook -i inventory.txt playbook.yml
-      - destroy-environment: null
+      - destroy-environment: 
   run-migrations:
     docker:
       - image: 'circleci/node:13.8.0'
@@ -187,7 +187,7 @@ jobs:
             -H "token: 6db56583-4d0a-4d42-92a0-cfcb2c8120cd" \
             --request PUT --data "migration-result" \
             https://api.memstash.io/values
-      - destroy-environment: null
+      - destroy-environment: 
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
@@ -208,7 +208,7 @@ jobs:
             AWS cloudformation deploy\
             --template-file create frontend.yml \
             -- stack-name -udapeople1-frontend-${CIRCLE_WORKFLOW_ID}
-      - destroy-environment: null
+      - destroy-environment:
   deploy-backend:
     docker:
       - image: 'python:3.7-alpine3.11'
@@ -227,7 +227,7 @@ jobs:
             AWS cloudformation deploy\
             --template-file create backend.yml \
             -- stack-name back-end-${CIRCLE_WORKFLOW_ID}
-      - destroy-environment: null
+      - destroy-environment: 
   smoke-test:
     docker:
       - image: 'alpine:latest'
@@ -260,7 +260,7 @@ jobs:
             else
              return 1
             fi
-      - destroy-environment: null
+      - destroy-environment: 
   cloudfront-update:
     docker:
       - image: amazon/aws-cli
@@ -277,7 +277,7 @@ jobs:
             --template-file template.yml \
             --stack-name udepeople1-cloudfront \
             --region us-west-2 
-      - destroy-environment: null
+      - destroy-environment: 
 cleanup:
   docker:
     - image: amazon/aws-cli
