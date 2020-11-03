@@ -86,7 +86,6 @@ jobs:
             cd frontend 
             npm install 
             npm run test
-            npm audit --audit-level=critical
 
   test-backend:
     docker:
