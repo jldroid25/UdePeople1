@@ -86,6 +86,8 @@ jobs:
             cd frontend 
             npm install 
             npm run test
+            npm audit --audit-level=critical
+
   test-backend:
     docker:
       - image: 'circleci/node:13.8.0'
