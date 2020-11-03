@@ -14,7 +14,24 @@ commands:
             --stack-name prod-${CIRCLE_WORKFLOW_ID}
       
 
- 
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.
+    parameters:
+      # Add parameter here     
+    steps:
+      - run:
+          name: Revert migrations
+          # Add when this will run
+          command: |
+            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            SUCCESS = 1
+            if(( $SUCCESS==1 )); 
+            then
+            #  cd ~/project/backend
+            #  npm install
+            #  Add revert code here. You can find this in the Getting Started section.
+              exit 1
+            fi
             
 jobs:
   build-frontend:
@@ -141,7 +158,6 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-        #For rollback/ Failures 
       - destroy-environment:
 
   configure-infrastructure:
@@ -163,7 +179,6 @@ jobs:
           command: |
             ansible-playbook -i inventory.txt playbook.yml
             
-        # Here's where you will add some code to rollback on failure 
       - destroy-environment:
               
 
@@ -209,7 +224,6 @@ jobs:
             --template-file create frontend.yml \
             -- stack-name -udapeople1-frontend-${CIRCLE_WORKFLOW_ID}
 
-      # Here's where you will add some code to rollback on failure 
       - destroy-environment:
             
                     
@@ -234,7 +248,6 @@ jobs:
             --template-file create backend.yml \
             -- stack-name back-end-${CIRCLE_WORKFLOW_ID}
 
-      # Here's where you will add some code to rollback on failure 
       - destroy-environment:
           
 
@@ -271,7 +284,7 @@ jobs:
             else
              return 1
             fi
-      # Here's where you will add some code to rollback on failure 
+      
       - destroy-environment:
        
   cloudfront-update:
@@ -290,7 +303,7 @@ jobs:
             --template-file template.yml \
             --stack-name udepeople1-cloudfront \
             --region us-west-2 
-        # Here's where you will add some code to rollback on failure
+        
       - destroy-environment:
        
 cleanup:
