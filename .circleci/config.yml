@@ -114,7 +114,7 @@ jobs:
       - restore_cache:
           
       - run: 
-        command: cd backend npm install 
+        command: cd backend npm install \ 
           npm audit --audit-level=critical || true
   deploy-infrastructure:
     docker:
