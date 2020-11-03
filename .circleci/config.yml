@@ -152,7 +152,8 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment: 
+      
+      - destroy-environment
   configure-infrastructure:
     docker:
       - image: 'python:3.7-alpine3.11'
@@ -169,7 +170,7 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook -i inventory.txt playbook.yml
-      - destroy-environment: 
+      - destroy-environment 
   run-migrations:
     docker:
       - image: 'circleci/node:13.8.0'
@@ -187,7 +188,7 @@ jobs:
             -H "token: 6db56583-4d0a-4d42-92a0-cfcb2c8120cd" \
             --request PUT --data "migration-result" \
             https://api.memstash.io/values
-      - destroy-environment: 
+      - destroy-environment
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
@@ -208,7 +209,7 @@ jobs:
             AWS cloudformation deploy\
             --template-file create frontend.yml \
             -- stack-name -udapeople1-frontend-${CIRCLE_WORKFLOW_ID}
-      - destroy-environment:
+      - destroy-environment
   deploy-backend:
     docker:
       - image: 'python:3.7-alpine3.11'
@@ -227,7 +228,7 @@ jobs:
             AWS cloudformation deploy\
             --template-file create backend.yml \
             -- stack-name back-end-${CIRCLE_WORKFLOW_ID}
-      - destroy-environment: 
+      - destroy-environment
   smoke-test:
     docker:
       - image: 'alpine:latest'
@@ -260,7 +261,7 @@ jobs:
             else
              return 1
             fi
-      - destroy-environment: 
+      - destroy-environment
   cloudfront-update:
     docker:
       - image: amazon/aws-cli
@@ -277,7 +278,7 @@ jobs:
             --template-file template.yml \
             --stack-name udepeople1-cloudfront \
             --region us-west-2 
-      - destroy-environment: 
+      - destroy-environment
 cleanup:
   docker:
     - image: amazon/aws-cli
