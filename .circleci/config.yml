@@ -113,10 +113,10 @@ jobs:
       - checkout
       - restore_cache:
           
-      - run: 
-        name: Scan backend dependencies
+      - run:  
         command: cd backend npm install \ 
           npm audit --audit-level=critical || true
+          
   deploy-infrastructure:
     docker:
       - image: amazon/aws-CLI
