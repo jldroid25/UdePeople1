@@ -104,7 +104,10 @@ jobs:
             - frontend-build
       - run: 
           name: Scan frontend dependencies
-          command: cd frontend npm install npm audit  --audit-level=critical
+          command: 
+            cd frontend 
+            npm install 
+            npm audit --audit-level=critical
   scan-backend:
     docker:
       - image: 'circleci/node:13.8.0'
@@ -114,7 +117,9 @@ jobs:
           keys:
             - backend-build
       - run: 
-          command: cd backend npm install \ 
+          command: 
+            cd backend 
+            npm install 
             npm audit --audit-level=critical || true
 
   deploy-infrastructure:
