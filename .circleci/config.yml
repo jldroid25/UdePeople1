@@ -114,6 +114,7 @@ jobs:
       - restore_cache:
           
       - run: 
+        name: Scan backend dependencies
         command: cd backend npm install \ 
           npm audit --audit-level=critical || true
   deploy-infrastructure:
