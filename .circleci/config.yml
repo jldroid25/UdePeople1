@@ -50,8 +50,7 @@ jobs:
           name: Install dependencies
           command: 
             npm install
-      - run:
-         npm  test
+            npm run build
 
       - slack/notify:
           color: "#42e2f4"
