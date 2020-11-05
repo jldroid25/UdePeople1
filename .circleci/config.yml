@@ -53,7 +53,7 @@ jobs:
             npm run build
 
       - slack/notify:
-          color: "#42e2f4"
+          color: "#33B7DA"
           mentions: "jldroid25,"
           message: Udepeople1's Project - Latest build Notification 
 
@@ -160,7 +160,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run: yum -y install tar gzip
       - run:
           name: Ensure backend infrastructure exist
           command: |
