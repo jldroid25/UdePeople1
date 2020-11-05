@@ -144,22 +144,22 @@ jobs:
       - run:
           name: Ensure backend infrastructure exist
           command: |
-            export IFS=$'\n'
+        
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udepeople1-tag \
               --stack-name  udepleople1-backend-stack ${vsphere1984} \
-              --parameter-overrides "ID=vsphere1984" \ 
+              --parameter-overrides "ID=vsphere1984-1" \ 
               tags project=jlbackend1-udepeople1-tag
       - run:
           name:  Ensure frontend infrastructure exist
           command: |
-            export IFS=$'\n'
+           
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=jlfrontend-udepeople1-tag \
               --stack-name udepleople1-frontkend-stack ${vsphere1984} \
-              --parameter-overrides "ID=vsphere1984" \ 
+              --parameter-overrides "ID=vsphere19842-" \ 
               tags project=jlfrontend-udepeople1-tag
       - run:
           name: Add back-end ip to ansible inventory
