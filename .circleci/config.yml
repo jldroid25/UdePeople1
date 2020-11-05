@@ -14,7 +14,7 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack \ 
-            --stack-name udepeople1-prod-${vsphere1984}
+            --stack-name "udepeople1-prod-${vsphere1984}"
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     
