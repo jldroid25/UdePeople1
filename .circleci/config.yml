@@ -5,6 +5,16 @@ orbs:
   slack: circleci/slack@3.4.2
 
 commands:
+
+      - slack/notify:
+        color: "#33B7DA"
+        mentions: "jldroid25,"
+        message: Udepeople1's Project - Latest build Notification 
+
+      - slack/status:
+        fail_only: true
+        mentions: "jldroid25"
+  
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     
@@ -171,15 +181,6 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
 
-      - slack/notify:
-        color: "#33B7DA"
-        mentions: "jldroid25,"
-        message: Udepeople1's Project - Latest build Notification 
-
-      - slack/status:
-        fail_only: true
-        mentions: "jldroid25"
-      
       - destroy-environment
   configure-infrastructure:
     docker:
