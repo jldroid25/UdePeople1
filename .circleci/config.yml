@@ -13,8 +13,10 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack \ 
-            --stack-name "udepeople1-prod-${vsphere1984}"
+            aws cloudformation delete-stack  \
+             --stack-name udepleople1-backend-stack ${vsphere1984} \
+             --stack-name udepleople1-frontend-stack ${vsphere1984}
+
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     
@@ -40,27 +42,6 @@ commands:
               exit 1
             fi
 jobs:
-
-  build-test-and-notify:
-    executor:
-      name: node/default
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: 
-            npm install
-            npm run test
-
-      - slack/notify:
-          color: "#33B7DA"
-          mentions: "jldroid25,"
-          message: Udepeople1's Project - Latest build Notification 
-
-      - slack/status:
-          fail_only: true
-          mentions: "jldroid25"
-
   build-frontend:
     docker:
       - image: 'circleci/node:13.8.0'
@@ -189,6 +170,15 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+
+      - slack/notify:
+        color: "#33B7DA"
+        mentions: "jldroid25,"
+        message: Udepeople1's Project - Latest build Notification 
+
+    - slack/status:
+        fail_only: true
+        mentions: "jldroid25"
       
       - destroy-environment
   configure-infrastructure:
@@ -347,7 +337,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-test-and-notify
       - build-frontend
       - build-backend
       - test-frontend:
