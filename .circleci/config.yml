@@ -200,12 +200,13 @@ jobs:
           name: Install dependencies
           command: 
             npm install
-            npm run build
+            npm run test
 
       - slack/notify:
           color: "#42e2f4"
           mentions: "JLdroid25:"
           message: MSG notify the channel about the latest build
+
       - slack/status:
           fail_only: true
           mentions: "JLdroid25:"
