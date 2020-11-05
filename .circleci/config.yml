@@ -42,16 +42,7 @@ commands:
 jobs:
 
   build-test-and-notify:
-    executor:
-      name: node/default
     steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            npm install
-            npm run test
-
       - slack/notify:
           color: "#42e2f4"
           mentions: "jldroid25,"
