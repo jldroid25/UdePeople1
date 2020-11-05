@@ -55,7 +55,7 @@ jobs:
       - slack/notify:
           color: "#42e2f4"
           mentions: "jldroid25,"
-          message: Message to notify the channel about the latest build
+          message: Udepeople1's Project - Latest build Notification 
 
       - slack/status:
           fail_only: true
