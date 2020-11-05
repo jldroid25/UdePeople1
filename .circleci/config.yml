@@ -58,6 +58,7 @@ jobs:
           message: Udepeople1's Project - Latest build Notification 
 
       - slack/status:
+          color: "#33B7DA"
           fail_only: true
           mentions: "jldroid25"
 
