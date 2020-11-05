@@ -176,7 +176,7 @@ jobs:
         mentions: "jldroid25,"
         message: Udepeople1's Project - Latest build Notification 
 
-    - slack/status:
+      - slack/status:
         fail_only: true
         mentions: "jldroid25"
       
