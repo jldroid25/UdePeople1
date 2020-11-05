@@ -40,6 +40,26 @@ commands:
               exit 1
             fi
 jobs:
+
+  build-test-and-notify:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run: npm test
+
+      - slack/notify:
+          color: "#42e2f4"
+          mentions: "yemiwebby,"
+          message: A custom message to notify the channel about the latest build
+
+      - slack/status:
+          fail_only: true
+          mentions: "yemiwebby"
+
   build-frontend:
     docker:
       - image: 'circleci/node:13.8.0'
@@ -327,6 +347,7 @@ jobs:
 workflows:
   default:
     jobs:
+      - build-test-and-notify
       - build-frontend
       - build-backend
       - test-frontend:
