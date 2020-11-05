@@ -328,7 +328,7 @@ jobs:
           command: |
             export OldWorkflowID=$(aws cloudformation \
             list-exports --query "Exports[?Name== \
-            `WorkflowID\`].Value" \
+            `vsphere1984\`].Value" \
             --no-paginate --output text)
 
             export STACKS=($(aws cloudformation list-stacks --query \
@@ -338,11 +338,10 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            if [[ "${STACKS[@]}" =~ "${vsphere1984}" ]]
             then
-            aws cloudformation delete-stack \
-            --stack-name "udepeople1-backend-${OldWorkflowID}" \
-            aws s3 rm "s3://udepeople1-${OldWorkflowID}" --recursive)
+            aws cloudformation delete-stack  --stack-name "udepeople1-backend-${vsphere1984}" \
+            aws s3 rm "s3://udepeople1-${vsphere1984}" --recursive)
             fi
 workflows:
   default:
