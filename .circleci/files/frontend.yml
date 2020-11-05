@@ -32,4 +32,4 @@ Outputs:
   WebsiteURL:
     Value: !GetAtt WebsiteBucket.WebsiteURL
     Description: URL for website hosted on S3 
-      http://udepeople1-vsphere1984.s3-website-us-east-1.amazonaws.com
+    

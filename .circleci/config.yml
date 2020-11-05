@@ -137,28 +137,28 @@ jobs:
       - checkout
       - run: yum -y install tar gzip
       - run:
-          name: udepleople1-backend
+          name: Ensure backend infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --tags project=jlbackend1-udepeople1-tag \
-              --stack-name  udepleople1-backend-stack ${CIRCLE_WORKFLOW_ID:0:7}\
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \ 
+              --tags project=udepeople1-tag \
+              --stack-name  udepleople1-backend-stack ${vsphere1984}\
+              --parameter-overrides ID="${vsphere1984}" \ 
               tags project=jlbackend1-udepeople1-tag
       - run:
-          name: udepleople1-frontkend
+          name: Ensure backend infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=jlfrontend-udepeople1-tag \
-              --stack-name udepleople1-frontkend-stack ${CIRCLE_WORKFLOW_ID:0:7} \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \ 
+              --stack-name udepleople1-frontkend-stack ${vsphere1984} \
+              --parameter-overrides ID="${vsphere1984}" \ 
               tags project=jlfrontend-udepeople1-tag
       - run:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances
-            --filters "Name=tag:Name.Values=backend-${CIRCLE_WORKFLOW_ID:07}"\
+            --filters "Name=tag:Name.Values=backend-${vsphere1984}"\
             --query 'Reservations[*].instances[*].PublicIpAddress'\
             --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:

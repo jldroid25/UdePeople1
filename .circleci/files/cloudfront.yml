@@ -36,6 +36,6 @@ Outputs:
   WorkflowID:
     Value: !Sub ${vsphere1984}
     Description: URL for website hosted on S3 
-      -http://udepeople1-vsphere1984.s3-website-us-east-1.amazonaws.com
+      http://udepeople1-vsphere1984.s3-website-us-east-1.amazonaws.com
     Export:
       Name: WorkflowID
