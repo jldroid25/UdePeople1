@@ -14,7 +14,7 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack \ 
-            --stack-name prod-${vsphere1984}
+            --stack-name udepeople1-prod-${vsphere1984}
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     
@@ -341,7 +341,7 @@ jobs:
             if [[ "${STACKS[@]}" =~ "${vsphere1984}" ]]
             then
             aws cloudformation delete-stack 
-            --stack-name "udepeople1-backend" \
+            --stack-name "udepeople1-backend-${vsphere1984}" \
             aws s3 rm "s3://udepeople1-${vsphere1984}" --recursive)
             fi
 workflows:
