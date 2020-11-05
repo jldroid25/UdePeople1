@@ -10,7 +10,7 @@ Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "udapeople-${ID}"
+      BucketName: !Sub "udepeople1-vsphere1984-${ID}"
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
@@ -31,4 +31,5 @@ Resources:
 Outputs:
   WebsiteURL:
     Value: !GetAtt WebsiteBucket.WebsiteURL
-    Description: URL for website hosted on S3
+    Description: URL for website hosted on S3 
+      http://udepeople1-vsphere1984.s3-website-us-east-1.amazonaws.com
