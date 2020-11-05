@@ -50,7 +50,7 @@ jobs:
           name: Install dependencies
           command: 
             npm install
-            npm run build
+            npm run test
 
       - slack/notify:
           color: "#33B7DA"
@@ -340,7 +340,8 @@ jobs:
           command: |
             if [[ "${STACKS[@]}" =~ "${vsphere1984}" ]]
             then
-            aws cloudformation delete-stack  --stack-name "udepeople1-backend-${vsphere1984}" \
+            aws cloudformation delete-stack 
+            --stack-name "udepeople1-backend" \
             aws s3 rm "s3://udepeople1-${vsphere1984}" --recursive)
             fi
 workflows:
